@@ -1,23 +1,23 @@
-import React, { Component, useState } from 'react';
-import { Button, Image, StyleSheet, Text, View, StatusBar } from 'react-native';
-import Header from './Header';
+import React, { Component, useState } from "react";
+import { Button, Image, StyleSheet, Text, View, StatusBar } from "react-native";
+import Header from "./Header";
 import {
   Card,
   DataTable,
   Subheading,
   Dialog,
   Paragraph,
-} from 'react-native-paper';
+} from "react-native-paper";
 
 export default ({ navigation, data_sample, importToLocal }) => {
   const [visible, setVisible] = useState();
 
   const showDialog = () =>
-    navigation.navigate('TkphDetails', { data123: data_sample });
+    navigation.navigate("TkphDetails", { data123: data_sample });
 
   const hideDialog = () => setVisible(false);
   let disabled = false;
-  if (data_sample['uploaded'] === 0) {
+  if (data_sample["uploaded"] === 0) {
     disabled = false;
   } else {
     disabled = true;
@@ -27,40 +27,40 @@ export default ({ navigation, data_sample, importToLocal }) => {
     <Card elevation={10} style={styles.card} onPress={showDialog}>
       <View style={styles.heading}>
         <Subheading style={styles.subheading}>
-          {data_sample['mine_details']}
+          {data_sample["mine_details"]}
         </Subheading>
       </View>
 
       <DataTable.Row>
         <DataTable.Cell>Vehicle Make & Model</DataTable.Cell>
         <DataTable.Cell>
-          <Text style={{ fontSize: 14, color: 'green', fontWeight: 'bold' }}>
-            {data_sample['vehicle_make'] + ' ' + data_sample['vehicle_model']}
+          <Text style={{ fontSize: 14, color: "green", fontWeight: "bold" }}>
+            {data_sample["vehicle_make"] + " " + data_sample["vehicle_model"]}
           </Text>
         </DataTable.Cell>
       </DataTable.Row>
       <DataTable.Row>
         <DataTable.Cell>Tyre Size</DataTable.Cell>
         <DataTable.Cell>
-          <Text style={{ fontSize: 14, color: 'blue', fontWeight: 'bold' }}>
-            {data_sample['tyre_size']}
+          <Text style={{ fontSize: 14, color: "blue", fontWeight: "bold" }}>
+            {data_sample["tyre_size"]}
           </Text>
         </DataTable.Cell>
       </DataTable.Row>
       <DataTable.Row>
         <DataTable.Cell>Added By</DataTable.Cell>
         <DataTable.Cell>
-          {' '}
-          <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
-            {data_sample['added_by']}
+          {" "}
+          <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+            {data_sample["added_by"]}
           </Text>
         </DataTable.Cell>
       </DataTable.Row>
       <DataTable.Row>
         <DataTable.Cell style>Date & Time Stamp</DataTable.Cell>
         <DataTable.Cell>
-          <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
-            {data_sample['date']}
+          <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+            {data_sample["date"]}
           </Text>
         </DataTable.Cell>
       </DataTable.Row>
@@ -90,22 +90,22 @@ const styles = StyleSheet.create({
   },
   heading: {
     marginBottom: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   subheading: {
-    color: 'red',
+    color: "red",
     fontSize: 18,
-    fontWeight: 'bold',
-    textShadowColor: 'blue',
+    fontWeight: "bold",
+    textShadowColor: "blue",
   },
   buttonbox: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent:'flex-end',
-    alignItems:"center",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
     height: 50,
   },
   button: {
-    width: '50%',
+    width: "50%",
   },
 });

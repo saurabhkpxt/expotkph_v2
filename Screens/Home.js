@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Button, Image, StyleSheet, Text, View, StatusBar } from "react-native";
 import Header from "./Header";
-import ResetDatabase from "./Components/ResetDatabase";
+import ResetDatabase from "../Components/ResetDatabase";
 
 export default ({ navigation }) => (
   <View>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Button,
   StyleSheet,
@@ -6,36 +6,36 @@ import {
   View,
   TextInput,
   ScrollView,
-} from 'react-native';
-import VehicleForCalc from './Components/VehicleForCalc';
-import CycleForCalc from './Components/CycleForCalc';
-import SizeForCalc from './Components/SizeForCalc';
-import * as FileSystem from 'expo-file-system';
-import * as SQLite from 'expo-sqlite';
+} from "react-native";
+import VehicleForCalc from "../../Components/VehicleForCalc";
+import CycleForCalc from "../../Components/CycleForCalc";
+import SizeForCalc from "../../Components/SizeForCalc";
+import * as FileSystem from "expo-file-system";
+import * as SQLite from "expo-sqlite";
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 function NewCalc() {
-  const [mine_details, setMine_details] = useState('');
-  const [tyre_size, setTyre_size] = useState('');
-  const [max_amb_temp, setMax_amb_temp] = useState('');
-  const [cycle_length, setCycle_length] = useState('');
+  const [mine_details, setMine_details] = useState("");
+  const [tyre_size, setTyre_size] = useState("");
+  const [max_amb_temp, setMax_amb_temp] = useState("");
+  const [cycle_length, setCycle_length] = useState("");
   const [k1_coefficient, setK1_coefficient] = useState();
-  const [cycle_duration, setCycle_duration] = useState('');
-  const [vehicle_make, setVehicle_make] = useState('');
-  const [vehicle_model, setVehicle_model] = useState('');
-  const [empty_vehicle_weight, setEmpty_vehicle_weight] = useState('');
-  const [pay_load, setPay_load] = useState('');
-  const [weight_correction, setWeight_correction] = useState('');
-  const [load_dist_front_unloaded, setLoad_dist_front_unloaded] = useState('');
-  const [load_dist_rear_unloaded, setLoad_dist_rear_unloaded] = useState('');
-  const [load_dist_front_loaded, setLoad_dist_front_loaded] = useState('');
-  const [load_dist_rear_loaded, setLoad_dist_rear_loaded] = useState('');
+  const [cycle_duration, setCycle_duration] = useState("");
+  const [vehicle_make, setVehicle_make] = useState("");
+  const [vehicle_model, setVehicle_model] = useState("");
+  const [empty_vehicle_weight, setEmpty_vehicle_weight] = useState("");
+  const [pay_load, setPay_load] = useState("");
+  const [weight_correction, setWeight_correction] = useState("");
+  const [load_dist_front_unloaded, setLoad_dist_front_unloaded] = useState("");
+  const [load_dist_rear_unloaded, setLoad_dist_rear_unloaded] = useState("");
+  const [load_dist_front_loaded, setLoad_dist_front_loaded] = useState("");
+  const [load_dist_rear_loaded, setLoad_dist_rear_loaded] = useState("");
   const [fields, setFields] = useState(true);
 
   const navigation = useNavigation();
 
-  let fileUri = '/xyz123.db';
+  let fileUri = "/xyz123.db";
   const db = SQLite.openDatabase(fileUri);
 
   function addTyreSize(data) {
@@ -43,21 +43,21 @@ function NewCalc() {
   }
   function addCycleLength(data) {
     console.log(data);
-    setCycle_length(parseFloat(data[0]['cycle_length']));
-    setK1_coefficient(parseFloat(data[0]['k1_coefficient']));
+    setCycle_length(parseFloat(data[0]["cycle_length"]));
+    setK1_coefficient(parseFloat(data[0]["k1_coefficient"]));
   }
   function addVehicleDetails(data) {
     console.log(data);
-    setVehicle_make(data[0]['vehicle_make']);
-    setVehicle_model(data[0]['vehicle_model']);
-    setEmpty_vehicle_weight(parseFloat(data[0]['empty_vehicle_weight']));
-    setPay_load(parseFloat(data[0]['pay_load']));
+    setVehicle_make(data[0]["vehicle_make"]);
+    setVehicle_model(data[0]["vehicle_model"]);
+    setEmpty_vehicle_weight(parseFloat(data[0]["empty_vehicle_weight"]));
+    setPay_load(parseFloat(data[0]["pay_load"]));
     setLoad_dist_front_unloaded(
-      parseFloat(data[0]['load_dist_front_unloaded'])
+      parseFloat(data[0]["load_dist_front_unloaded"])
     );
-    setLoad_dist_rear_unloaded(parseFloat(data[0]['load_dist_rear_unloaded']));
-    setLoad_dist_front_loaded(parseFloat(data[0]['load_dist_front_loaded']));
-    setLoad_dist_rear_loaded(parseFloat(data[0]['load_dist_rear_loaded']));
+    setLoad_dist_rear_unloaded(parseFloat(data[0]["load_dist_rear_unloaded"]));
+    setLoad_dist_front_loaded(parseFloat(data[0]["load_dist_front_loaded"]));
+    setLoad_dist_rear_loaded(parseFloat(data[0]["load_dist_rear_loaded"]));
   }
 
   const addSqlDb = () => {
@@ -102,7 +102,7 @@ function NewCalc() {
       load_dist_rear_unloaded: load_dist_rear_unloaded,
       load_dist_front_loaded: load_dist_front_loaded,
       load_dist_rear_loaded: load_dist_rear_loaded,
-      added_by: 'saurabh',
+      added_by: "saurabh",
       distance_km_per_hour: distance_km_per_hour,
       gross_vehicle_weight: gross_vehicle_weight,
       k1_dist_coefficient: k1_coefficient,
@@ -130,7 +130,7 @@ function NewCalc() {
     console.log(values);
     db.transaction(
       (tx) => {
-        values['date_stamp'] = Date.now();
+        values["date_stamp"] = Date.now();
         Object.values(values);
         console.log(JSON.stringify(Object.keys(values)));
         const len = JSON.stringify(Object.keys(values)).length;
@@ -142,8 +142,8 @@ function NewCalc() {
           sqlValues
         );
 
-        tx.executeSql('select * from items', [], (_, { rows }) => {
-          console.log(JSON.stringify(rows['_array']));
+        tx.executeSql("select * from items", [], (_, { rows }) => {
+          console.log(JSON.stringify(rows["_array"]));
         });
       },
       null,
@@ -238,41 +238,41 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     margin: 10,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
   },
   boxHeader: {
     marginBottom: 10,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontStyle: 'italic',
+    textAlign: "center",
+    fontWeight: "bold",
+    fontStyle: "italic",
     fontSize: 15,
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
   },
   textInput: {
     margin: 1,
     height: 40,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
-    width: '60%',
+    width: "60%",
   },
   level: {
     height: 40,
-    width: '40%',
-    textAlign: 'left',
-    fontWeight: 'bold',
-    justifyContent: 'center',
+    width: "40%",
+    textAlign: "left",
+    fontWeight: "bold",
+    justifyContent: "center",
   },
   ltCombo: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   outerBox: {
     padding: 5,
     paddingTop: 0,
-    marginHorizontal: 'auto',
-    width: '100%',
+    marginHorizontal: "auto",
+    width: "100%",
     maxWidth: 500,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
   },
 });
