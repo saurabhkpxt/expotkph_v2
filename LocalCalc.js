@@ -1,0 +1,239 @@
+import React, { Component, useState, useEffect } from 'react';
+import {
+  Button,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  ScrollView,
+  TextInput,
+  FlatList,
+} from 'react-native';
+import Header from './Header';
+import * as FileSystem from 'expo-file-system';
+import TkphCard from './TkphCard';
+import * as SQLite from 'expo-sqlite';
+import axios from './axios';
+
+function useForceUpdate() {
+  const [value, setValue] = useState(0);
+  return [() => setValue(value + 1), value];
+}
+
+export default ({ navigation, data_sample }) => {
+  const [data, setData] = useState('Change this text');
+  const [forceUpdate, forceUpdateId] = useForceUpdate();
+  const [reloadSwitch, setReloadSwitch] = useState(false);
+  const [dataArray, setDataArray] = useState([
+    {
+      date_stamp: Date.now(),
+      date: '07.01.2020',
+      mine_details: 'RK Transport',
+      tyre_size: '18.00-25',
+      max_amb_temp: '35',
+      cycle_length: '10',
+      cycle_duration: '120',
+      vehicle_make: 'CAT',
+      vehicle_model: '170',
+      empty_vehicle_weight: '153760',
+      pay_load: '249480',
+      weight_correction: '0',
+      load_dist_front_unloaded: '47',
+      load_dist_rear_unloaded: '53',
+      load_dist_front_loaded: '33.3',
+      load_dist_rear_loaded: '66.7',
+      added_by: 'saurabh',
+      distance_km_per_hour: '5',
+      gross_vehicle_weight: '403240',
+      k1_dist_coefficient: '1.12',
+      k2_temp_coefficient: '0.85',
+      avg_tyre_load_front: '51637',
+      avg_tyre_load_rear: '43807',
+      basic_site_tkph_front: '258',
+      basic_site_tkph_rear: '219',
+      real_site_tkph_front: '246',
+      real_site_tkph_rear: '209',
+    },
+  ]);
+  const [values, setValues] = useState({
+    date_stamp: Date.now(),
+    date: '07.01.2020',
+    mine_details: 'RK Transport',
+    tyre_size: '18.00-25',
+    max_amb_temp: '35',
+    cycle_length: '10',
+    cycle_duration: '120',
+    vehicle_make: 'CAT',
+    vehicle_model: '170',
+    empty_vehicle_weight: '153760',
+    pay_load: '249480',
+    weight_correction: '0',
+    load_dist_front_unloaded: '47',
+    load_dist_rear_unloaded: '53',
+    load_dist_front_loaded: '33.3',
+    load_dist_rear_loaded: '66.7',
+    added_by: 'saurabh',
+    distance_km_per_hour: '5',
+    gross_vehicle_weight: '403240',
+    k1_dist_coefficient: '1.12',
+    k2_temp_coefficient: '0.85',
+    avg_tyre_load_front: '51637',
+    avg_tyre_load_rear: '43807',
+    basic_site_tkph_front: '258',
+    basic_site_tkph_rear: '219',
+    real_site_tkph_front: '246',
+    real_site_tkph_rear: '209',
+  });
+  const column_names = [
+    'date_stamp',
+    'date',
+    'mine_details',
+    'tyre_size',
+    'max_amb_temp',
+    'cycle_length',
+    'cycle_duration',
+    'vehicle_make',
+    'vehicle_model',
+    'empty_vehicle_weight',
+    'pay_load',
+    'weight_correction',
+    'load_dist_front_unloaded',
+    'load_dist_rear_unloaded',
+    'load_dist_front_loaded',
+    'load_dist_rear_loaded',
+    'added_by',
+    'distance_km_per_hour',
+    'gross_vehicle_weight',
+    'k1_dist_coefficient',
+    'k2_temp_coefficient',
+    'avg_tyre_load_front',
+    'avg_tyre_load_rear',
+    'basic_site_tkph_front',
+    'basic_site_tkph_rear',
+    'real_site_tkph_front',
+    'real_site_tkph_rear',
+    'uploaded',
+  ];
+
+  let fileUri = '/xyz123.db';
+  const db = SQLite.openDatabase(fileUri);
+  useEffect(() => {
+    db.transaction(
+      (tx) => {
+        tx.executeSql('select * from items', [], (_, { rows }) => {
+          setDataArray(rows['_array']);
+          setData(JSON.stringify(rows['_array']));
+        });
+      },
+      null,
+      null
+    );
+  }, [reloadSwitch]);
+
+  const deleteRecord = (date_stamp) => {
+    db.transaction(
+      (tx) => {
+        tx.executeSql(
+          `delete from items where date_stamp ='${date_stamp}'`,
+          []
+        );
+      },
+      null,
+      null
+    );
+    alert('Record Deleted!');
+
+    setReloadSwitch(!reloadSwitch);
+  };
+  const [text, setText] = React.useState(null);
+  //
+  const addSqlDb = () => {
+    db.transaction(
+      (tx) => {
+        values['date_stamp'] = Date.now();
+        Object.values(values);
+        console.log(JSON.stringify(Object.keys(values)));
+        const len = JSON.stringify(Object.keys(values)).length;
+        const sqlFields = JSON.stringify(Object.keys(values)).slice(1, len - 1);
+        const sqlValues = Object.values(values);
+
+        tx.executeSql(
+          `insert into items (${sqlFields}) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          sqlValues
+        );
+        tx.executeSql('select * from items', [], (_, { rows }) => {
+          console.log(rows['_array']);
+        });
+      },
+      null,
+      null
+    );
+  };
+  //
+  const upload = (values) => {
+    console.log('being uploaded');
+    async function insertData(values) {
+      values['uploaded'] = !values['uploaded'];
+      const req = await axios.post('/insertrecords/', values);
+      alert('record uploaded');
+
+      db.transaction(
+        (tx) => { 
+          Object.values(values);
+          console.log(values);
+          const len = JSON.stringify(Object.keys(values)).length;
+          const sqlFields = JSON.stringify(Object.keys(values)).slice(
+            1,
+            len - 1
+          );
+          const sqlValues = Object.values(values);
+
+          tx.executeSql(
+            `insert or replace into items (${sqlFields}) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+            sqlValues
+          );
+          tx.executeSql('select * from items', [], (_, { rows }) => {
+            console.log(rows['_array']);
+          });
+        },
+        null,
+        null
+      );
+      setReloadSwitch(!reloadSwitch);
+    }
+    insertData(values);
+  };
+
+  return (
+    <View>
+      <Button
+        color="black"
+        onPress={() => {
+          setReloadSwitch(!reloadSwitch);
+        }}
+        title="Reload"
+      />
+      <FlatList
+        data={dataArray}
+        renderItem={({ item }) => (
+          <TkphCard
+            navigation={navigation}
+            data_sample={item}
+            deleteRecord={deleteRecord}
+            upload={upload}
+          />
+        )}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  header: {
+    marginTop: StatusBar.currentHeight,
+  },
+  logo: {
+    height: 80,
+  },
+});
