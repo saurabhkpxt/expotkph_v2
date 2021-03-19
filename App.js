@@ -21,7 +21,6 @@ import { ThemeProvider } from './ThemeContext';
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
-//
 let data_sample = [
   {
     date_stamp: '1610022038934',
