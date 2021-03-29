@@ -12,6 +12,7 @@ import CycleForCalc from './Components/CycleForCalc';
 import SizeForCalc from './Components/SizeForCalc';
 import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
+import FormComp from './Components/FormComp';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -157,6 +158,14 @@ function NewCalc() {
       <ScrollView>
         <View style={styles.outerBox}>
           <Text style={styles.boxHeader}>Mine & Tyre Details </Text>
+
+          <FormComp
+            value={mine_details}
+            level={'Mine Name'}
+            placeholder={'Enter Mine Details'}
+            method={setMine_details}
+          />
+
           <View style={styles.ltCombo}>
             <Text style={styles.level}>Mine Name & Address</Text>
             <TextInput
@@ -216,16 +225,16 @@ function NewCalc() {
         color="darkblue"
         onPress={() => {
           addSqlDb();
-          alert('Details Submitted!')
-          setMine_details('')
-          setMax_amb_temp('')
-          setCycle_duration('')
-          setWeight_correction('')
-      
-            setFields(false);
-            setTimeout(() => {
-              setFields(true);
-            }, 500);
+          alert('Details Submitted!');
+          setMine_details('');
+          setMax_amb_temp('');
+          setCycle_duration('');
+          setWeight_correction('');
+
+          setFields(false);
+          setTimeout(() => {
+            setFields(true);
+          }, 500);
         }}
         title="Submit"
       />

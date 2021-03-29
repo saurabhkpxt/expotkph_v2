@@ -10,11 +10,11 @@ import {
   TextInput,
   FlatList,
 } from 'react-native';
-import Header from './Header';
+import Header from '../../Header';
 import * as FileSystem from 'expo-file-system';
-import TkphCard from './TkphCard';
+import TkphCard from '../../TkphCard';
 import * as SQLite from 'expo-sqlite';
-import axios from './axios';
+import axios from '../../axios';
 
 function useForceUpdate() {
   const [value, setValue] = useState(0);

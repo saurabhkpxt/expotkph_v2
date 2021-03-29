@@ -9,16 +9,16 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import Header from './Header';
-import ResetDatabase from './Components/ResetDatabase';
-import MovingDumper from './Components/MovingDumper';
+import Header from '../../Header';
+import ResetDatabase from '../../Components/ResetDatabase';
+import MovingDumper from '../../Components/MovingDumper';
 import Constants from 'expo-constants';
 import { AntDesign, Ionicons, FontAwesome, Entypo } from '@expo/vector-icons';
 import * as SQLite from 'expo-sqlite';
-import ThemeProvider from './ThemeContext';
+import ThemeProvider from '../../ThemeContext';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-import {useTheme, useThemeUpdate} from './ThemeContext'
+import {useTheme, useThemeUpdate} from '../../ThemeContext'
 
 export default ({ navigation, route }) => {
   const [user, setUser] = useState('user');
@@ -164,7 +164,7 @@ export default ({ navigation, route }) => {
           }}>
           
           <Image
-            source={require('./dumper-logo.jpg')}
+            source={require('../../dumper-logo.jpg')}
             resizeMethod="resize"
             resizeMode="contain"
             style={{

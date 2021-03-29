@@ -43,7 +43,7 @@ export default ({ user, email, logOut }) => {
           borderTopWidth: 3,
         }}>
         <Image
-          source={require('./jktyre-logo.png')}
+          source={require('./assets/jktyre-logo.png')}
           style={{ width: 150, height: 45, padding: 10 }}
         />
         <View style={{ flexDirection: 'row', margin: 5, paddingLeft: 5 }}>

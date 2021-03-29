@@ -37,7 +37,7 @@
     "@react-native-community/masked-view": "0.1.10"
   },
   "devDependencies": {
-    "@babel/core": "~7.9.0"
+    "@babel/core": "^7.9.0"
   },
   "private": true
 }

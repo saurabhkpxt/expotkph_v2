@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import Header from './Header';
 import NewCalc from './NewCalc';
-import Home from './Home';
+import Home from './Screens/Home/Home';
 import LogIn from './LogIn';
-import LocalCalc from './LocalCalc';
-import CloudCalc from './CloudCalc';
+import LocalCalc from './Screens/AvailableCalc/LocalCalc';
+import CloudCalc from './Screens/AvailableCalc/CloudCalc';
 import TkphDetails from './TkphDetails';
 import { StatusBar } from 'react-native';
 import { NavigationContainer, TabActions } from '@react-navigation/native';
@@ -15,6 +15,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import DBVehicles from './Screens/Database/DBVehicles';
 import DBTyreSizes from './Screens/Database/DBTyreSizes';
 import DBK1Coefficient from './Screens/Database/DBK1Coefficient';
+import DBMines from './Screens/Database/DBMines';
 import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
 import { ThemeProvider } from './ThemeContext';
@@ -98,6 +99,7 @@ const Database = ({ navigation }) => {
         activeTintColor: 'darkred',
         inactiveTintColor: 'gray',
       }}>
+      <Tabs.Screen name="DBMines" component={DBMines} />
       <Tabs.Screen name="DBVehicles" component={DBVehicles} />
       <Tabs.Screen name="DBTyreSizes" component={DBTyreSizes} />
       <Tabs.Screen name="DBK1Coefficient" component={DBK1Coefficient} />
@@ -134,6 +136,10 @@ function App() {
         tx.executeSql(
           'create table if not exists vehicles1 (vehicle_id TEXT primary key not null, vehicle_make TEXT,vehicle_model TEXT,empty_vehicle_weight TEXT,pay_load TEXT,load_dist_front_unloaded TEXT,load_dist_rear_unloaded TEXT,load_dist_front_loaded TEXT,load_dist_rear_loaded TEXT);'
         );
+
+        tx.executeSql(
+          'create table if not exists k1coefficient123 (cycle_length TEXT primary key not null, k1_coefficient TEXT);'
+        );
         tx.executeSql('select * from user', [], (_, { rows }) => {
           console.log('connected to DB');
           console.log(rows['_array']);
@@ -150,6 +156,7 @@ function App() {
     <ThemeProvider>
       <NavigationContainer>
         <Stack.Navigator>
+          <Stack.Screen name="Database" component={Database} />
 
           <Stack.Screen
             name="Home"
@@ -167,14 +174,12 @@ function App() {
             component={AvailableCalc}
             initialParams={data_sample}
           />
-            <Stack.Screen
+          <Stack.Screen
             name="TkphDetails"
             component={TkphDetails}
             data_sample={data_sample}
           />
-
           <Stack.Screen name="NewCalc" component={NewCalc} />
-          <Stack.Screen name="Database" component={Database} />
         </Stack.Navigator>
       </NavigationContainer>
     </ThemeProvider>
